@@ -1,33 +1,35 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, {useState} from "react";
+import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
+import Home from './pages/Home';
+import WelcomePage from './pages/WelcomePage';
+import SignUp from './pages/SignUp';
+import SignIn from './pages/SignIn';
+import TextPage from './pages/TextPage';
+import WordPage from './pages/WordPage';
+import User from './pages/User';
 
 function App() {
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+
+    const [isLoggedIn, setLoggedIn] = useState(false);
+
+    const history = useNavigate();
+ 
+    const handleLoginChange = () => {
+        setLoggedIn(!isLoggedIn);
+        !isLoggedIn ? history('/home') : history('/');
+    };
+
+    return (
+            <Routes>
+                <Route exact path="/"  element={<WelcomePage isLoggedIn={isLoggedIn} onLoginChange={handleLoginChange}/>} />
+                <Route path="/home" element={<Home isLoggedIn={isLoggedIn} onLoginChange={handleLoginChange}/>} />
+                <Route path="/sign_up" element={<SignUp isLoggedIn={isLoggedIn} onLoginChange={handleLoginChange}/>} />
+                <Route path="/sign_in" element={<SignIn isLoggedIn={isLoggedIn} onLoginChange={handleLoginChange}/>} />
+                <Route path="/text_page" element={<TextPage isLoggedIn={isLoggedIn} onLoginChange={handleLoginChange}/>} />
+                <Route path="/word_page" element={<WordPage isLoggedIn={isLoggedIn} onLoginChange={handleLoginChange}/>} />
+                <Route path="/user" element={<User isLoggedIn={isLoggedIn} onLoginChange={handleLoginChange}/>} />
+            </Routes>
+    )
 }
 
-export default App
+export default App;
