@@ -15,14 +15,27 @@ const SignIn = ( { isLoggedIn, onLoginChange} ) => {
       setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
   
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
       e.preventDefault();
-      axios.post('https://your-csharp-backend/api/signin', formData)
-        .then(response => {
-          const token = response.data.token;
-          onLoginChange();
-        })
-        .catch(error => console.error('Error during sign in:', error));
+  
+      try {
+        const response = await axios.get('https://localhost:7298/api/User/LogIn', {
+          params: {
+            email: formData.email,
+            user_password: formData.password,
+          },
+        });
+        
+        const user = response.data;
+  
+        const token = response.data.token;
+
+        onLoginChange(token);
+
+        localStorage.setItem('token', token);
+      } catch (error) {
+        console.error('Error during sign in:', error);
+      }
     };
 
     return (

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
 import Home from './pages/Home';
 import WelcomePage from './pages/WelcomePage';
@@ -11,12 +11,19 @@ import User from './pages/User';
 function App() {
 
     const [isLoggedIn, setLoggedIn] = useState(false);
-
     const history = useNavigate();
- 
-    const handleLoginChange = () => {
-        setLoggedIn(!isLoggedIn);
-        !isLoggedIn ? history('/home') : history('/');
+
+    
+    const handleLoginChange = (token) => {
+        if (token) {
+            localStorage.setItem('token', token);
+            setLoggedIn(true);
+            history('/home');
+        } else {
+            localStorage.removeItem('token');
+            setLoggedIn(false);
+            history('/');
+        }
     };
 
     return (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../CSS/Sign.css';
 import axios from 'axios';
 import Footer from '../components/Footer';
@@ -6,10 +6,10 @@ import Navbar from '../components/Navbar';
 
 const SignUp = ({ isLoggedIn, onLoginChange }) => {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    name: '',
+    surname: '',
     email: '',
-    password: '',
+    userPassword: '',
   });
 
   const handleChange = (e) => {
@@ -17,22 +17,25 @@ const SignUp = ({ isLoggedIn, onLoginChange }) => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    axios.post('https://your-csharp-backend/api/signup', formData)
-      .then(response => {
+    try {
+      const response = await axios.post('https://localhost:7298/api/User/SignUp', formData);
 
-        const token = response.data.token;
+      const token = response.data.token;
 
-        onLoginChange();
-      })
-      .catch(error => console.error('Error during sign up:', error));
+      onLoginChange(token);
+
+      localStorage.setItem('token', token);
+  } catch (error) {
+      console.error('Error during sign up:', error);
+  }
     setFormData({
-      firstName: '',
-      lastName: '',
+      name: '',
+      surname: '',
       email: '',
-      password: '',
+      userPassword: '',
     });
   };
 
@@ -47,8 +50,8 @@ const SignUp = ({ isLoggedIn, onLoginChange }) => {
           <input
             placeholder='first name'
             type="text"
-            name="firstName"
-            value={formData.firstName}
+            name="name"
+            value={formData.name}
             onChange={handleChange}
             required
           />            
@@ -58,8 +61,8 @@ const SignUp = ({ isLoggedIn, onLoginChange }) => {
           <input
             placeholder='last name'
             type="text"
-            name="lastName"
-            value={formData.lastName}
+            name="surname"
+            value={formData.surname}
             onChange={handleChange}
             required
           />
@@ -79,8 +82,8 @@ const SignUp = ({ isLoggedIn, onLoginChange }) => {
           <input
             placeholder='password'
             type="password"
-            name="password"
-            value={formData.password}
+            name="userPassword"
+            value={formData.userPassword}
             onChange={handleChange}
             required
           />

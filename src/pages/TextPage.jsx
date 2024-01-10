@@ -1,8 +1,21 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 
-function WelcomePage({ isLoggedIn, onLoginChange }) {
+function TextPage({ isLoggedIn, onLoginChange }) {
+
+    const [selectedOption, setSelectedOption] = useState('');
+
+    const handleOptionChange = (e) => {
+        setSelectedOption(e.target.value);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        
+        console.log("Selected Option:", selectedOption);
+    };
+
     return (
         <div>
             <div className="main-body">
@@ -26,7 +39,53 @@ function WelcomePage({ isLoggedIn, onLoginChange }) {
                     </section>
 
                     <section>
-                        <input/>  
+                    <form onSubmit={handleSubmit}>
+                        <label>
+                            <input
+                                type="radio"
+                                name="option"
+                                value="Option 1"
+                                checked={selectedOption === "Option 1"}
+                                onChange={handleOptionChange}
+                            />
+                            Option 1
+                        </label>
+
+                        <label>
+                            <input
+                                type="radio"
+                                name="option"
+                                value="Option 2"
+                                checked={selectedOption === "Option 2"}
+                                onChange={handleOptionChange}
+                            />
+                            Option 2
+                        </label>
+
+                        <label>
+                            <input
+                                type="radio"
+                                name="option"
+                                value="Option 3"
+                                checked={selectedOption === "Option 3"}
+                                onChange={handleOptionChange}
+                            />
+                            Option 3
+                        </label>
+
+                        <label>
+                            <input
+                                type="radio"
+                                name="option"
+                                value="Option 4"
+                                checked={selectedOption === "Option 4"}
+                                onChange={handleOptionChange}
+                            />
+                            Option 4
+                        </label>
+
+                        <button type="submit">Submit</button>
+                    </form>  
                     </section>       
                 </div>
 
@@ -38,4 +97,4 @@ function WelcomePage({ isLoggedIn, onLoginChange }) {
     )
 }
 
-export default WelcomePage;
+export default TextPage;
