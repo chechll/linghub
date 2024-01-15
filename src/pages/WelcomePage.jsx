@@ -2,7 +2,7 @@ import React from "react";
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 
-function WelcomePage({ isLoggedIn, onLoginChange }) {
+function WelcomePage({ isLoggedIn, onLoginChange, idUser}) {
     return (
         <div >
                 <Navbar isLoggedIn={isLoggedIn}/>

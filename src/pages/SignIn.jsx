@@ -3,8 +3,10 @@ import axios from 'axios';
 import '../CSS/Sign.css';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
+import { toast } from 'react-toastify';
+import { BrowserRouter as Router, Route, Routes,Link } from 'react-router-dom';
 
-const SignIn = ( { isLoggedIn, onLoginChange} ) => {
+const SignIn = ( { isLoggedIn, onLoginChange, idUser} ) => {
     const [formData, setFormData] = useState({
       email: '',
       password: '',
@@ -25,16 +27,14 @@ const SignIn = ( { isLoggedIn, onLoginChange} ) => {
             user_password: formData.password,
           },
         });
+
+        onLoginChange(response.data);
+
+        localStorage.clear();
         
-        const user = response.data;
-  
-        const token = response.data.token;
-
-        onLoginChange(token);
-
-        localStorage.setItem('token', token);
       } catch (error) {
         console.error('Error during sign in:', error);
+        toast.error('Error during sign-in. Please check your credentials and try again.');
       }
     };
 
@@ -67,6 +67,7 @@ const SignIn = ( { isLoggedIn, onLoginChange} ) => {
           </label>
           <button >Sign In</button>
         </form>
+        <Link to="/problem">i have some issues</Link>
         <Footer />
       </div>
     );

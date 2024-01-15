@@ -3,8 +3,10 @@ import '../CSS/Sign.css';
 import axios from 'axios';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
+import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
-const SignUp = ({ isLoggedIn, onLoginChange }) => {
+const SignUp = ({ isLoggedIn, onLoginChange, idUser }) => {
   const [formData, setFormData] = useState({
     name: '',
     surname: '',
@@ -23,13 +25,10 @@ const SignUp = ({ isLoggedIn, onLoginChange }) => {
     try {
       const response = await axios.post('https://localhost:7298/api/User/SignUp', formData);
 
-      const token = response.data.token;
-
-      onLoginChange(token);
-
-      localStorage.setItem('token', token);
+      onLoginChange(response.data);
   } catch (error) {
       console.error('Error during sign up:', error);
+      toast.error('Error during sign-up. Please check your credentials and try again.');
   }
     setFormData({
       name: '',
@@ -90,7 +89,8 @@ const SignUp = ({ isLoggedIn, onLoginChange }) => {
         </label>
         <button type="submit">Sign Up</button>
       </form>
-      </div>
+      <Link to="/problem">i have some issues</Link>
+      </div>      
       <Footer/>
     </div>
   );
