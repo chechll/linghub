@@ -8,7 +8,7 @@ import TextPage from './pages/TextPage';
 import WordPage from './pages/WordPage';
 import User from './pages/User';
 import Problems from './pages/Problems';
-import { ToastContainer } from 'react-toastify';
+import NoPage from "./pages/NoPage";
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
@@ -41,8 +41,8 @@ function App() {
                 <Route path="/word_page" element={<WordPage isLoggedIn={isLoggedIn} onLoginChange={handleLoginChange} idUser={idUser}/>} />
                 <Route path="/user" element={<User isLoggedIn={isLoggedIn} onLoginChange={handleLoginChange} idUser={idUser}/>} />
                 <Route path="/problem" element={<Problems isLoggedIn={isLoggedIn} onLoginChange={handleLoginChange} idUser={idUser}/>} />
+                <Route path="*" element={<NoPage />} />
             </Routes>
-            <ToastContainer />
         </>
     )
 }

@@ -1,180 +1,237 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 import { toast } from 'react-toastify';
-import { Link, useNavigate} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-function User({ isLoggedIn, onLoginChange, idUser}) {
-
+function User({ isLoggedIn, onLoginChange, idUser }) {
   const [userData, setUserData] = useState({
-      photo: '../assets/userPhoto.jpg',
-      name: '',
-      surname: '',
-      email: '',
-      userPassword: '',
-      idUser: idUser,
+    name: '',
+    surname: '',
+    email: '',
+    userPassword: '',
+    idUser: idUser,
+    photo: '',
+    isAdmin: 0,
   });
 
   const [isEditing, setEditing] = useState(false);
-    
-    useEffect(() => {
-        if (idUser == 0) {
-            onLoginChange(idUser);
-        }
-        const fetchUserData = async () => {
-            try {
-                const response = await axios.get('https://localhost:7298/api/User/GetUser' ,
-                {
-                    params: {
-                      id: idUser,
-                    },
-                });
-                const user = response.data; 
-                setUserData({
-                    name: user.name,
-                    surname: user.surname,
-                    email: user.email,
-                    userPassword: user.userPassword,
-                    idUser: idUser,
-                    photo: user.photo !== null ? user.photo : '../assets/userPhoto.jpg',
-                });
-            } catch (error) {
-                console.error('Error fetching user data:', error);
-                toast.error('Error fetching user data');
-            }
-        };
 
-        fetchUserData();
-    }, []);
+  useEffect(() => {
+    if (idUser === 0) {
+      onLoginChange(idUser);
+    }
 
-    const handleDelete = async (e) => {
-        e.preventDefault();
-    
-        const isConfirmed = window.confirm("Are you sure you want to delete your account?");
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get('https://localhost:7298/api/User/GetUser', {
+          params: {
+            id: idUser,
+          },
+        });
 
-        if (isConfirmed) {
-            try {
-                const response = await axios.delete('https://localhost:7298/api/User/Delete', {
-                    params: {
-                        userId: idUser,
-                    },
-                });
-                console.log('Deleted successfully');
-                onLoginChange(response.data);
-            } catch (error) {
-                console.error('Error during delete:', error);
-                toast.error('Error during delete');
-            }
+        const user = response.data;
+
+        let photoUrl;
+        if (user.photo != null && user.photo !== '') {
+          // Decode the base64-encoded image
+          const binaryString = atob(user.photo);
+          const byteArray = new Uint8Array(binaryString.length);
+          for (let i = 0; i < binaryString.length; i++) {
+            byteArray[i] = binaryString.charCodeAt(i);
+          }
+          const blob = new Blob([byteArray], { type: 'image/jpeg' });
+          photoUrl = URL.createObjectURL(blob);
         } else {
-            console.log('User chose not to delete the account.');
+          // Default photo URL if no photo is available
+          photoUrl = 'src/assets/userPhoto.jpg';
         }
-      };
 
-      const handleUpdate = async (e) => {
-        e.preventDefault();
-        
-        try {
-            const response = await axios.put(`https://localhost:7298/api/User/Update?userId=${idUser}`, userData);
-        
-            console.log('User updated successfully:', response.data);
-        } catch (error) {
-            console.error('Error during update:', error);
-            toast.error('Error during update');
-        }
-        setEditing(false);
+        setUserData({
+          name: user.name,
+          surname: user.surname,
+          email: user.email,
+          idUser: idUser,
+          photo: photoUrl,
+        });
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        toast.error('Error fetching user data');
+      }
     };
 
-      const handleChange = (e) => {
-        const { name, value } = e.target;
-        setUserData((prevData) => ({ ...prevData, [name]: value, id_user: idUser }));
+    fetchUserData();
+  }, [idUser]);
+
+  const handleDelete = async (e) => {
+    e.preventDefault();
+
+    const isConfirmed = window.confirm('Are you sure you want to delete your account?');
+
+    if (isConfirmed) {
+      try {
+        const response = await axios.delete('https://localhost:7298/api/User/Delete', {
+          params: {
+            userId: idUser,
+          },
+        });
+        console.log('Deleted successfully');
+        onLoginChange(response.data);
+      } catch (error) {
+        console.error('Error during delete:', error);
+        toast.error('Error during delete');
+      }
+    } else {
+      console.log('User chose not to delete the account.');
+    }
+  };
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+
+    try {
+      const formData = new FormData();
+      formData.append('idUser', idUser);
+      formData.append('name', userData.name);
+      formData.append('surname', userData.surname);
+      formData.append('email', userData.email);
+      formData.append('userPassword', userData.userPassword);
+      formData.append('isAdmin', userData.isAdmin);
+
+      // Append the new photo file, if it exists
+      if (userData.newPhotoFile) {
+        formData.append('photo', userData.newPhotoFile);
+      }
+
+      const response = await axios.put('https://localhost:7298/api/User/Update', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      console.log('User updated successfully:', response.data);
+    } catch (error) {
+      console.error('Error during update:', error);
+      toast.error('Error during update');
+    }
+
+    setEditing(false);
+  };
+
+  const handleChange = (e) => {
+    const { name, value, type } = e.target;
+
+    if (type === 'file') {
+      const newPhotoFile = e.target.files[0];
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        const photoBase64 = reader.result.split(',')[1];
+        setUserData((prevData) => ({ ...prevData, newPhotoFile, photo: `data:image/jpeg;base64,${photoBase64}` }));
       };
 
-      const handleEdit = () => {
-        setEditing(true);
-      };
+      if (newPhotoFile) {
+        reader.readAsDataURL(newPhotoFile);
+      } else {
+        setUserData((prevData) => ({ ...prevData, newPhotoFile, photo: '' }));
+      }
+    } else {
+      setUserData((prevData) => ({ ...prevData, [name]: value }));
+    }
+  };
 
-    const handleLogout = () => {
-        onLoginChange();
-    };
+  const handleEdit = () => {
+    setEditing(true);
+  };
 
-    return (
-        <div>
-          <Navbar isLoggedIn={isLoggedIn} />
-    
-          <div className='main-c'>
-            <h2>User Information</h2>
-    
+  const handleLogout = () => {
+    onLoginChange();
+  };
+
+  return (
+    <div>
+      <Navbar isLoggedIn={isLoggedIn} />
+
+      <div className="main-c">
+        <h2>User Information</h2>
+
+        {!isEditing ? (
+          <>
+            <div>
+              <img src={userData.photo} alt="Profile" className="profile-photo" />
+            </div>
+            <div>
+              <strong>Name:</strong> <p>{userData.name}</p>
+            </div>
+            <div>
+              <strong>Surname:</strong> <p>{userData.surname}</p>
+            </div>
+            <div>
+              <strong>Email:</strong> <p>{userData.email}</p>
+            </div>
+          </>
+        ) : (
+          <>
+            <div>
+              <label>
+                <strong>New Photo:</strong>
+                <input type="file" name="photo" accept="image/*" onChange={handleChange} />
+              </label>
+            </div>
+            <div>
+              <label>
+                <strong>Name: </strong>
+                <input type="text" name="name" value={userData.name} onChange={handleChange} />
+              </label>
+            </div>
+            <div>
+              <label>
+                <strong>Surname: </strong>
+                <input type="text" name="surname" value={userData.surname} onChange={handleChange} />
+              </label>
+            </div>
+            <div>
+              <label>
+                <strong>Email: </strong>
+                <input type="text" name="email" value={userData.email} onChange={handleChange} />
+              </label>
+            </div>
+            <div>
+              <label>
+                <strong>Password:</strong>
+                <input type="password" name="userPassword" value={userData.userPassword} onChange={handleChange} />
+              </label>
+            </div>
+          </>
+        )}
+
+        <div className="user-actions">
+          <ul>
             {!isEditing ? (
               <>
-                <div>
-                  <img src={userData.photo} alt="Profile" className="profile-photo" />
-                </div>
-                <div>
-                  <strong>Name:</strong> <p>{userData.name}</p>
-                </div>
-                <div>
-                  <strong>Surname:</strong> <p>{userData.surname}</p>
-                </div>
-                <div>
-                  <strong>Email:</strong> <p>{userData.email}</p>
-                </div>
+                <li>
+                  <button onClick={handleEdit}>Update</button>
+                </li>
+                <li>
+                  <button onClick={handleDelete}>Delete</button>
+                </li>
+                <li>
+                  <button onClick={handleLogout}>Log Out</button>
+                </li>
               </>
             ) : (
-              <>
-                <div>
-                  <label>
-                    <strong>Name:  </strong>{' '}
-                    <input type="text" name="name" value={userData.name} onChange={handleChange} />
-                  </label>
-                </div>
-                <div>
-                  <label>
-                    <strong>Surname: </strong>{' '}
-                    <input type="text" name="surname" value={userData.surname} onChange={handleChange} />
-                  </label>
-                </div>
-                <div>
-                  <label>
-                    <strong>Email:   </strong>{' '}
-                    <input type="text" name="email" value={userData.email} onChange={handleChange} />
-                  </label>
-                </div>
-                <div>
-                  <label>
-                    <strong>Password:</strong>{' '}
-                    <input type="password" name="password" value={userData.userPassword} onChange={handleChange} />
-                  </label>
-                </div>
-              </>
+              <li>
+                <button onClick={handleUpdate}>Update</button>
+              </li>
             )}
-    
-            <div className="user-actions">
-              <ul>
-                {!isEditing ? (
-                  <>
-                    <li>
-                      <button onClick={handleEdit}>Update</button>
-                    </li>
-                    <li>
-                      <button onClick={handleDelete}>Delete</button>
-                    </li>
-                    <li>
-                        <button onClick={handleLogout}>Log Out</button>
-                    </li>
-                  </>
-                ) : (
-                  <li>
-                    <button onClick={handleUpdate}>Update</button>
-                  </li>
-                )}
-              </ul>
-              <Link to="/problem">i have some issues</Link>
-            </div>
-          </div>
-          <Footer />
+          </ul>
+          <Link to="/problem">i have some issues</Link>
         </div>
-      );
+      </div>
+      <Footer />
+    </div>
+  );
 }
 
 export default User;
