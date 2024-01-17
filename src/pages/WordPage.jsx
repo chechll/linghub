@@ -13,32 +13,38 @@ function WordPage({ isLoggedIn, onLoginChange, idUser}) {
         uasent: '',
     });
 
+    const [isThereAnyNewWord, setIsThereAnyNewWord] = useState(true); 
+
+    const fetchWordData = async () => {
+        try {
+            const response = await axios.get('https://localhost:7298/api/Word/GetWord' ,
+            {
+                params: {
+                  idUser: idUser,
+                },
+            });
+            const words = response.data; 
+            setWordData({
+                idWord: words.idWord,
+                enword: words.enword,
+                uaword: words.uaword,
+                ensent: words.ensent,
+                uasent: words.uasent,
+            });
+        } catch (error) {
+            if (error.response && error.response.status === 404) {
+                setIsThereAnyNewWord(false);
+            } else {
+                console.error('Error fetching word data:', error);
+                toast.error('Error fetching word data');
+            }
+        }
+    };
+
     useEffect(() => {
         if (idUser == 0) {
           onLoginChange(idUser);
         }
-
-        const fetchWordData = async () => {
-            try {
-                const response = await axios.get('https://localhost:7298/api/Word/GetWord' ,
-                {
-                    params: {
-                      idUser: idUser,
-                    },
-                });
-                const words = response.data; 
-                setWordData({
-                    idWord: words.idWord,
-                    enword: words.enword,
-                    uaword: words.uaword,
-                    ensent: words.ensent,
-                    uasent: words.uasent,
-                });
-            } catch (error) {
-                console.error('Error fetching word data:', error);
-                toast.error('Error fetching word data');
-            }
-        };
 
         fetchWordData();
     }, []);
@@ -62,11 +68,12 @@ function WordPage({ isLoggedIn, onLoginChange, idUser}) {
                 try {
                     const response = await axios.post('https://localhost:7298/api/UWord/AddSolvedWord' ,
                     {
-                        params: {
-                          idUser: idUser,
-                          idText: textData.idText,
-                        },
+                        idUser: idUser,
+                        idWord: wordData.idWord,
                     });
+
+                    setWord('');
+                    fetchWordData();
                 } catch (error) {
                     console.error('Error saving answer data:', error);
                     toast.error('Error saving answer data');
@@ -85,39 +92,47 @@ function WordPage({ isLoggedIn, onLoginChange, idUser}) {
             <Navbar isLoggedIn={isLoggedIn}/>
 
             <div className='main-c'>
-            <section>
-                    <p>
-                        {wordData.uasent}
-                    </p>
-            </section>
+            {isThereAnyNewWord ? (
+                <>
+                <section>
+                        <p>
+                            {wordData.uasent}
+                        </p>
+                </section>
 
-            <section>
-                    <p>
-                        {wordData.enword}
-                    </p>
-            </section>
+                <section>
+                        <p>
+                            {wordData.enword}
+                        </p>
+                </section>
 
-            <section>
-                    <p>
-                        {wordData.ensent}
-                    </p>
-            </section>
+                <section>
+                        <p>
+                            {wordData.ensent}
+                        </p>
+                </section>
 
-            <section>
-                        <form onSubmit={handleSubmit}>
-                            <label>
-                                <input
-                                placeholder='word'
-                                type="text"
-                                name="word"
-                                value={word}
-                                onChange={handleChange}
-                                />
-                            </label>
-                            <button>Check</button>
-                        </form>
-             </section>
-
+                <section>
+                            <form onSubmit={handleSubmit}>
+                                <label>
+                                    <input
+                                    placeholder='word'
+                                    type="text"
+                                    name="word"
+                                    value={word}
+                                    onChange={handleChange}
+                                    />
+                                </label>
+                                <button>Check</button>
+                            </form>
+                </section>
+                </>
+            ) : (
+                <p>
+                    Good work! You've already knew all words on this page. Wait until we will add some new.
+                </p>
+            )}
+            
             </div>
 
             <Footer />

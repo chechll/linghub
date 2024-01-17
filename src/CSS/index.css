@@ -92,3 +92,29 @@ section > ol > li {
    padding: 20px;
 }
 
+.icon-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .icon-item {
+    margin: 0 10px; 
+  }
+  
+  .day-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .day-item {
+    margin: 0 10px; 
+  }
+
+  .profile-photo {
+    width: 100px; 
+    height: 100px;
+    border-radius: 50%;
+  }

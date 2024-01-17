@@ -11,7 +11,7 @@ const SignIn = ( { isLoggedIn, onLoginChange, idUser} ) => {
       email: '',
       password: '',
     });
-  
+
     const handleChange = (e) => {
       const { name, value } = e.target;
       setFormData((prevData) => ({ ...prevData, [name]: value }));
@@ -28,14 +28,22 @@ const SignIn = ( { isLoggedIn, onLoginChange, idUser} ) => {
           },
         });
 
-        onLoginChange(response.data);
+        try {
 
-        localStorage.clear();
+          const resp = await axios.post(`https://localhost:7298/api/Calendar/AddDate?idUser=${response.data}`);
+
+        } catch (error) {
+          console.error('Error during saving date', error);
+          toast.error('Error during saving date');
+        }
+  
+        onLoginChange(response.data);
         
       } catch (error) {
         console.error('Error during sign in:', error);
         toast.error('Error during sign-in. Please check your credentials and try again.');
       }
+
     };
 
     return (

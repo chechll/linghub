@@ -8,6 +8,7 @@ import { Link, useNavigate} from 'react-router-dom';
 function User({ isLoggedIn, onLoginChange, idUser}) {
 
   const [userData, setUserData] = useState({
+      photo: '../assets/userPhoto.jpg',
       name: '',
       surname: '',
       email: '',
@@ -36,6 +37,7 @@ function User({ isLoggedIn, onLoginChange, idUser}) {
                     email: user.email,
                     userPassword: user.userPassword,
                     idUser: idUser,
+                    photo: user.photo !== null ? user.photo : '../assets/userPhoto.jpg',
                 });
             } catch (error) {
                 console.error('Error fetching user data:', error);
@@ -105,6 +107,9 @@ function User({ isLoggedIn, onLoginChange, idUser}) {
     
             {!isEditing ? (
               <>
+                <div>
+                  <img src={userData.photo} alt="Profile" className="profile-photo" />
+                </div>
                 <div>
                   <strong>Name:</strong> <p>{userData.name}</p>
                 </div>

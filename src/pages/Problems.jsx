@@ -49,7 +49,7 @@ const Problems = ( { isLoggedIn, onLoginChange, idUser} ) => {
             description: formData.description,
         });
         console.log('Commited successfully');
-        toast.error('Commited successfully');
+        toast.success('Commited successfully');
       } catch (error) {
         console.error('Error during commiting:', error);
         toast.error('Error during commiting');
@@ -71,12 +71,12 @@ const Problems = ( { isLoggedIn, onLoginChange, idUser} ) => {
             />
           </label>
           <label>
-            <input
+            <textarea
               placeholder='description'
-              type="text"
               name="description"
               value={formData.description}
               onChange={handleChange}
+              style={{ fontSize: '16px', minHeight: '100px'}}
             />
           </label>
           <button >Submit</button>
