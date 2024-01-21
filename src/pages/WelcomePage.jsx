@@ -1,15 +1,16 @@
 import React from "react";
+import '../CSS/index.css';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 
 function WelcomePage({ isLoggedIn, operatingData}) {
     return (
-        <div >
+        <div className="main-c">
                 <Navbar isLoggedIn={isLoggedIn} operatingData={operatingData}/>
-                
-                <div className="main-c">
+                    <div>
                     <h1>Welcome to "Learn Ukrainian" at LingHub!</h1>
 
+                    <div className="wel-sections">
                     <section>
                         <h2>Why Learn Ukrainian with Us?</h2>
                         <ul>
@@ -34,10 +35,10 @@ function WelcomePage({ isLoggedIn, operatingData}) {
                     <section>
                         <h2>Our Approach: Tailored for English Speakers</h2>
                         <p>Understanding the unique challenges English speakers face when learning Ukrainian, we have designed our lessons to address these specific needs.</p>
-                    </section>          
-                </div>
-
-                <Footer/> 
+                    </section>
+                    </div>
+                    </div>
+                    <Footer/> 
         </div>
         
     )

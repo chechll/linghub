@@ -4,29 +4,21 @@ import Navbar from '../components/Navbar';
 import UserWord from '../components/WordPage/UserWord';
 import AdminWord from '../components/WordPage/AdminWord';
 
-function WordPage({ isLoggedIn, onLoginChange, operatingData}) {
+function WordPage({ isLoggedIn, onLoginChange, operatingData }) {
 
     return (
-        <div>
-            <div className="main-body">
+        <div className="main-c">
 
-                <Navbar isLoggedIn={isLoggedIn} operatingData={operatingData}/>
-                
-                <div className="main-c">
+            <Navbar isLoggedIn={isLoggedIn} operatingData={operatingData} />
 
-                    {operatingData.isAdmin == 0 ? (
-                        <UserWord onLoginChange={onLoginChange} operatingData={operatingData}/>
-                    ) : (
-                        <AdminWord isLoggedIn={isLoggedIn} onLoginChange={onLoginChange} operatingData={operatingData}/>
-                    )}
-                       
-                </div>
+            {operatingData.isAdmin == 0 ? (
+                <UserWord onLoginChange={onLoginChange} operatingData={operatingData} />
+            ) : (
+                <AdminWord isLoggedIn={isLoggedIn} onLoginChange={onLoginChange} operatingData={operatingData} />
+            )}
 
-                <Footer/> 
-
-            </div>
+            <Footer />
         </div>
-        
     )
 }
 

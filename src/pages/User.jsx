@@ -25,46 +25,46 @@ function User({ isLoggedIn, onLoginChange, operatingData }) {
       onLoginChange(operatingData.idUser);
     }
 
-    if( prevEditing === isEditing) {
+    if (prevEditing === isEditing) {
 
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get('https://localhost:7298/api/User/GetUser', {
-          params: {
-            id: operatingData.idUser,
-          },
-        });
+      const fetchUserData = async () => {
+        try {
+          const response = await axios.get('https://localhost:7298/api/User/GetUser', {
+            params: {
+              id: operatingData.idUser,
+            },
+          });
 
-        const user = response.data;
+          const user = response.data;
 
-        let photoUrl;
-        if (user.photo != null && user.photo !== '') {
-          const binaryString = atob(user.photo);
-          const byteArray = new Uint8Array(binaryString.length);
-          for (let i = 0; i < binaryString.length; i++) {
-            byteArray[i] = binaryString.charCodeAt(i);
+          let photoUrl;
+          if (user.photo != null && user.photo !== '') {
+            const binaryString = atob(user.photo);
+            const byteArray = new Uint8Array(binaryString.length);
+            for (let i = 0; i < binaryString.length; i++) {
+              byteArray[i] = binaryString.charCodeAt(i);
+            }
+            const blob = new Blob([byteArray], { type: 'image/jpeg' });
+            photoUrl = URL.createObjectURL(blob);
+          } else {
+            photoUrl = 'src/assets/userPhoto.jpg';
           }
-          const blob = new Blob([byteArray], { type: 'image/jpeg' });
-          photoUrl = URL.createObjectURL(blob);
-        } else {
-          photoUrl = 'src/assets/userPhoto.jpg';
+
+          setUserData({
+            name: user.name,
+            surname: user.surname,
+            email: user.email,
+            idUser: operatingData.idUser,
+            isAdmin: operatingData.isAdmin,
+            photo: photoUrl,
+          });
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+          toast.error('Error fetching user data');
         }
+      };
 
-        setUserData({
-          name: user.name,
-          surname: user.surname,
-          email: user.email,
-          idUser: operatingData.idUser,
-          isAdmin: operatingData.isAdmin,
-          photo: photoUrl,
-        });
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-        toast.error('Error fetching user data');
-      }
-    };
-
-    fetchUserData();
+      fetchUserData();
     }
   }, [operatingData.idUser, isEditing]);
 
@@ -73,24 +73,18 @@ function User({ isLoggedIn, onLoginChange, operatingData }) {
   };
 
   return (
-    <div>
-      <Navbar isLoggedIn={isLoggedIn} operatingData={operatingData}/>
+    <div className="main-c">
+      <Navbar isLoggedIn={isLoggedIn} operatingData={operatingData} />
 
-      <div className="main-c">
-        <h2>User Information</h2>
-
-
-        {operatingData.isAdmin !== 1 ? (
-          !isEditing ? (
-            <ShowUser handleEdit={handleEdit} userData={userData} onLoginChange={onLoginChange} />
-          ) : (
-            <UserUpdate handleEdit={handleEdit} userData={userData} setUserData={setUserData} />
-          )
+      {operatingData.isAdmin !== 1 ? (
+        !isEditing ? (
+          <ShowUser handleEdit={handleEdit} userData={userData} onLoginChange={onLoginChange} />
         ) : (
-          <ShowUser handleEdit={handleEdit} userData={userData} onLoginChange={onLoginChange}/>
-        )}
-        
-      </div>
+          <UserUpdate handleEdit={handleEdit} userData={userData} setUserData={setUserData} />
+        )
+      ) : (
+        <ShowUser handleEdit={handleEdit} userData={userData} onLoginChange={onLoginChange} />
+      )}
       <Footer />
     </div>
   );

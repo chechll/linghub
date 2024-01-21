@@ -63,7 +63,10 @@ const AdminText = ( { isLoggedIn, onLoginChange, operatingData} ) => {
     <div>
       {!isEditing && !isCreating && (
         <>          
-          <h2>All Texts</h2>
+          <h1>All Texts</h1>
+          <button className="button" onClick={() => handleCreate()}>Create</button>
+          <hr className='hr-style'/>
+          
           <ul className="item-list">
           {textData.map((text) => (
               <li key={text.idText} className="item">
@@ -79,7 +82,7 @@ const AdminText = ( { isLoggedIn, onLoginChange, operatingData} ) => {
               </li>
           ))}
           </ul>
-          <button className="button" onClick={() => handleCreate()}>Create</button>
+          
         </>
       )}
       { isEditing && !isCreating && (

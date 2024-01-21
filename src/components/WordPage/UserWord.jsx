@@ -91,29 +91,29 @@ function UserWord({ isLoggedIn, onLoginChange, operatingData}) {
     };
 
     return (
-        <div>
+        <div >
             
             {isThereAnyNewWord ? (
-                <>
-                <section>
+                <div className='user-lis'>
+                <section className="user-section">
                         <p>
                             {wordData.uasent}
                         </p>
                 </section>
 
-                <section>
-                        <p>
+                <section className="user-section">
+                        <h3>
                             {wordData.enword}
-                        </p>
+                        </h3>
                 </section>
 
-                <section>
+                <section className="user-section">
                         <p>
                             {wordData.ensent}
                         </p>
                 </section>
 
-                <section>
+                <section className="user-section">
                             <form onSubmit={handleSubmit}>
                                 <label>
                                     <input
@@ -127,11 +127,13 @@ function UserWord({ isLoggedIn, onLoginChange, operatingData}) {
                                 <button className="button">Check</button>
                             </form>
                 </section>
-                </>
+                </div>
             ) : (
-                <p>
-                    Good work! You've already knew all words on this page. Wait until we will add some new.
-                </p>
+                <div className='main-cent'>
+                    <p>
+                        Good work! You've already knew all words on this page. Wait until we will add some new.
+                    </p>
+                </div>
             )}
             
         </div>

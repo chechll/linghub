@@ -47,11 +47,12 @@ function HomeAdmin ({onLoginChange, operatingData}) {
 
     return (
         <div>
-            <h2>All Errors</h2>
+            <h1>All Errors</h1>
+            <hr className='hr-style'/>
             <ul className="item-list">
             {errors.map((error) => (
                 <li key={error.id} className="item">
-                <strong>Email:</strong> {error.email}, <strong>Description:</strong> {error.description}
+                <strong>Email:</strong> {error.email} , <strong>Description:</strong> {error.description}
                 <button className="button" onClick={() => handleDelete()}>
                     Delete
                 </button>

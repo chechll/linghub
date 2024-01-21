@@ -63,40 +63,43 @@ function UserUpdate ({handleEdit, userData, setUserData}) {
     };
 
     return (
-        <div>
-            <div>
+        <div className='main-b'> 
+            <h2>User Information</h2>
+          <div className="update-user">
+            
               <label>
                 <strong>New Photo:</strong>
                 <input type="file" name="photo" accept="image/*" onChange={handleChange} />
               </label>
-            </div>
-            <div>
+            
+            
               <label>
-                <strong>Name: </strong>
+                <strong>Name: &nbsp;&nbsp; &nbsp; &nbsp; </strong>
                 <input type="text" name="name" value={userData.name} onChange={handleChange} />
               </label>
-            </div>
-            <div>
-              <label>
-                <strong>Surname: </strong>
+            
+            <div className='form-container'>
+              <label className='form-l'>
+                <strong>Surname: &nbsp;</strong>
                 <input type="text" name="surname" value={userData.surname} onChange={handleChange} />
-              </label>
+                </label>
             </div>
             <div>
               <label>
-                <strong>Email: </strong>
+                <strong>Email: &nbsp; &nbsp; &nbsp; </strong>
                 <input type="text" name="email" value={userData.email} onChange={handleChange} />
               </label>
             </div>
             <div>
               <label>
-                <strong>Password:</strong>
+                <strong>Password: </strong>
                 <input type="password" name="userPassword" value={userData.userPassword} onChange={handleChange} />
               </label>
             </div>
+          </div>
 
-        <div className="user-actions user-buttons">
-          <ul>
+        <div className="user-actions">
+          <ul className="user-buttons">
             <li><button className="button" onClick={handleUpdate}>Update</button></li>
             <li><button className="button" onClick={handleEdit}>Back</button></li>
           </ul>  

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import '../CSS/Sign.css';
+import '../CSS/index.css';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 import { toast } from 'react-toastify';
@@ -57,7 +57,7 @@ const Problems = ( { isLoggedIn, operatingData} ) => {
     };
 
     return (
-      <div className='main-c sign'>
+      <div className='main-c'>
         <Navbar isLoggedIn={isLoggedIn} operatingData={operatingData}/>
         <h1>Problem</h1>
         <form onSubmit={handleSubmit}>

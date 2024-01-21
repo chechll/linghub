@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../CSS/Sign.css';
+import '../CSS/index.css';
 import axios from 'axios';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
@@ -64,10 +64,10 @@ const SignUp = ({ isLoggedIn, onLoginChange, operatingData , setOperatingData}) 
   };
 
   return (
-    <div className='main-c sign'>
+    <div className='main-c'>
       <Navbar isLoggedIn={isLoggedIn} operatingData={operatingData}/> 
-      <div>
-      <h1 className='signUp'>Sign Up</h1>
+      <div className='main-b'>
+      <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
         <label>
           
@@ -114,8 +114,8 @@ const SignUp = ({ isLoggedIn, onLoginChange, operatingData , setOperatingData}) 
         </label>
         <button className="button" type="submit">Sign Up</button>
       </form>
-      <Link to="/problem">i have some issues</Link>
-      </div>      
+      <Link to="/problem" className="link">i have some issues</Link>   
+      </div> 
       <Footer/>
     </div>
   );

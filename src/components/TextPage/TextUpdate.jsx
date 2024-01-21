@@ -51,7 +51,8 @@ const TextUpdate = ( {handleEdit, choosedText, setChoosedText} ) => {
   };
 
   return (
-    <div>
+    <div className='main-b'>
+      <h2>Text Info</h2>
           <div>
             <label>
               <strong>Name: </strong>
@@ -101,7 +102,7 @@ const TextUpdate = ( {handleEdit, choosedText, setChoosedText} ) => {
             </label>
           </div>
           <div className="user-actions">
-            <ul>
+            <ul className="user-buttons">
               <li><button className="button" onClick={handleUpdate}>Update</button></li>
               <li><button className="button" onClick={() => handleEdit(choosedText)}>Back</button></li>
             </ul> 

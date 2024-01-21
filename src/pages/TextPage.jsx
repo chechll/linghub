@@ -5,29 +5,23 @@ import Navbar from '../components/Navbar';
 import UserText from '../components/TextPage/UserText';
 import AdminText from '../components/TextPage/AdminText';
 
-function TextPage({ isLoggedIn, onLoginChange, operatingData}) {
+function TextPage({ isLoggedIn, onLoginChange, operatingData }) {
 
     return (
-        <div>
-            <div className="main-body">
+        <div className="main-c">
 
-                <Navbar isLoggedIn={isLoggedIn} operatingData={operatingData}/>
-                
-                <div className="main-c">
+            <Navbar isLoggedIn={isLoggedIn} operatingData={operatingData} />
 
-                    {operatingData.isAdmin == 0 ? (
-                        <UserText onLoginChange={onLoginChange} operatingData={operatingData}/>
-                    ) : (
-                        <AdminText isLoggedIn={isLoggedIn} onLoginChange={onLoginChange} operatingData={operatingData}/>
-                    )}
-                       
-                </div>
+            {operatingData.isAdmin == 0 ? (
+                <UserText onLoginChange={onLoginChange} operatingData={operatingData} />
+            ) : (
+                <AdminText isLoggedIn={isLoggedIn} onLoginChange={onLoginChange} operatingData={operatingData} />
+            )}
 
-                <Footer/> 
+            <Footer />
 
-            </div>
         </div>
-        
+
     )
 }
 

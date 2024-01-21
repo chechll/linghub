@@ -61,7 +61,10 @@ const AdminWord = ({ isLoggedIn, onLoginChange, operatingData }) => {
         <div>
             {!isEditing && !isCreating && (
                 <>
-                    <h2>All Words</h2>
+                    <h1>All Words</h1>
+                    <button className="button" onClick={() => handleCreate()}>Create</button>
+                    <hr className='hr-style'/>
+                    
                     <ul className="item-list">
                         {wordsData.map((word) => (
                             <li key={word.idWord} className="item">
@@ -78,7 +81,7 @@ const AdminWord = ({ isLoggedIn, onLoginChange, operatingData }) => {
                             </li>
                         ))}
                     </ul>
-                    <button className="button" onClick={() => handleCreate()}>Create</button>
+                    
                 </>
             )}
             {isEditing && !isCreating && (

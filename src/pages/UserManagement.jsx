@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import '../CSS/Sign.css';
+import '../CSS/index.css';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 import { toast } from 'react-toastify';
@@ -94,7 +94,7 @@ const UserManager = ( { isLoggedIn, onLoginChange, operatingData} ) => {
   };
 
   return (
-    <div>
+    <div className='main-c'>
       <Navbar isLoggedIn={isLoggedIn} operatingData={operatingData}/>
       {!isEditing ? (
         <>          

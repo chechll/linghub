@@ -32,7 +32,8 @@ function ShowUser ({handleEdit, userData, onLoginChange}) {
     };
 
     return (
-        <>
+        <div className="main-b">
+            <h2>User Information</h2>
             <div>
                 <img src={userData.photo} alt="Profile" className="profile-photo" />
             </div>
@@ -45,8 +46,8 @@ function ShowUser ({handleEdit, userData, onLoginChange}) {
             <div>
                 <strong>Email:</strong> <p>{userData.email}</p>
             </div>
-          <div className="user-actions">
-            <ul>
+          <div>
+            <ul className="user-buttons">
               {userData.isAdmin !== 1 && (
                 <>
                   <li>
@@ -61,9 +62,9 @@ function ShowUser ({handleEdit, userData, onLoginChange}) {
                   <button className="button" onClick={handleLogout}>Log Out</button>
                 </li>
             </ul>
-            <Link to="/problem">i have some issues</Link>
+            <Link to="/problem" className='link'>i have some issues</Link>
           </div>
-        </>
+        </div>
     );
 }
 

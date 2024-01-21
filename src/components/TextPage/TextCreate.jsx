@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import '../../CSS/Sign.css';
 import '../../CSS/index.css';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -46,8 +45,8 @@ const TextCreate = ({ handleCreate , fetchTexts}) => {
   };
 
   return (
-      <div>
-      <h1 className='signUp'>New Word</h1>
+      <div className='main-b'>
+      <h1>New Text</h1>
       <form onSubmit={handleSubmit}>
         <label>
           
@@ -132,7 +131,7 @@ const TextCreate = ({ handleCreate , fetchTexts}) => {
           />
         </label>
         <div  className="user-actions">
-            <ul>
+            <ul className="user-buttons">
                 <li><button className="button" type="submit">Update</button></li>
                 <li><button className="button" onClick={() => handleCreate()}>Back</button></li>
             </ul>
