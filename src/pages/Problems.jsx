@@ -5,7 +5,7 @@ import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 import { toast } from 'react-toastify';
 
-const Problems = ( { isLoggedIn, onLoginChange, idUser} ) => {
+const Problems = ( { isLoggedIn, operatingData} ) => {
     const [formData, setFormData] = useState({
       email: '',
       description: '',
@@ -17,13 +17,13 @@ const Problems = ( { isLoggedIn, onLoginChange, idUser} ) => {
     };
   
     useEffect(() => {
-        if (idUser != 0) {
+        if (operatingData.idUser != 0) {
             const fetchUserData = async () => {
                 try {
                     const response = await axios.get('https://localhost:7298/api/User/GetUser' ,
                     {
                         params: {
-                        id: idUser,
+                        id: operatingData.idUser,
                         },
                     });
                     const user = response.data; 
@@ -58,7 +58,7 @@ const Problems = ( { isLoggedIn, onLoginChange, idUser} ) => {
 
     return (
       <div className='main-c sign'>
-        <Navbar isLoggedIn={isLoggedIn}/>
+        <Navbar isLoggedIn={isLoggedIn} operatingData={operatingData}/>
         <h1>Problem</h1>
         <form onSubmit={handleSubmit}>
           <label>
@@ -79,7 +79,7 @@ const Problems = ( { isLoggedIn, onLoginChange, idUser} ) => {
               style={{ fontSize: '16px', minHeight: '100px'}}
             />
           </label>
-          <button >Submit</button>
+          <button className="button">Submit</button>
         </form>
         <Footer />
       </div>

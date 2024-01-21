@@ -2,10 +2,10 @@ import React from "react";
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 
-function WelcomePage({ isLoggedIn, onLoginChange, idUser}) {
+function WelcomePage({ isLoggedIn, operatingData}) {
     return (
         <div >
-                <Navbar isLoggedIn={isLoggedIn}/>
+                <Navbar isLoggedIn={isLoggedIn} operatingData={operatingData}/>
                 
                 <div className="main-c">
                     <h1>Welcome to "Learn Ukrainian" at LingHub!</h1>

@@ -6,7 +6,7 @@ import Navbar from '../components/Navbar';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 
-const SignUp = ({ isLoggedIn, onLoginChange, idUser }) => {
+const SignUp = ({ isLoggedIn, onLoginChange, operatingData , setOperatingData}) => {
   const [formData, setFormData] = useState({
     name: '',
     surname: '',
@@ -25,10 +25,35 @@ const SignUp = ({ isLoggedIn, onLoginChange, idUser }) => {
     try {
       const response = await axios.post('https://localhost:7298/api/User/SignUp', formData);
 
-      onLoginChange(response.data);
+      setOperatingData({
+        idUser: response.data.idUser,
+        isAdmin: response.data.isAdmin,
+      });
+
+      toast.success('Successfuly, created');
+
+      try {
+
+        const resp = await axios.post(`https://localhost:7298/api/Calendar/AddDate?idUser=${operatingData.idUser}`);
+
+      } catch (error) {
+        console.error('Error during saving date', error);
+        toast.error('Error during saving date');
+      }
+
+      
+
+      onLoginChange(operatingData.idUser);
   } catch (error) {
-      console.error('Error during sign up:', error);
-      toast.error('Error during sign-up. Please check your credentials and try again.');
+    if (error.response && error.response.status === 422) {
+      console.error('Validation Error:', error.response.data);
+      const errorMessages = error.response.data[''].errors;
+      console.log('Error Messages:', errorMessages);
+      toast.error('Error Messages:', errorMessages);
+    } else {
+      console.error('Error:', error.message);
+      toString.error('error',error);
+    }
   }
     setFormData({
       name: '',
@@ -40,7 +65,7 @@ const SignUp = ({ isLoggedIn, onLoginChange, idUser }) => {
 
   return (
     <div className='main-c sign'>
-      <Navbar isLoggedIn={isLoggedIn}/> 
+      <Navbar isLoggedIn={isLoggedIn} operatingData={operatingData}/> 
       <div>
       <h1 className='signUp'>Sign Up</h1>
       <form onSubmit={handleSubmit}>
@@ -87,7 +112,7 @@ const SignUp = ({ isLoggedIn, onLoginChange, idUser }) => {
             required
           />
         </label>
-        <button type="submit">Sign Up</button>
+        <button className="button" type="submit">Sign Up</button>
       </form>
       <Link to="/problem">i have some issues</Link>
       </div>      
