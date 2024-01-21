@@ -50,12 +50,13 @@ const TextCreate = ({ handleCreate , fetchTexts}) => {
       <form onSubmit={handleSubmit}>
         <label>
           
-          <input
+          <textarea
             placeholder='text '
             type="text"
             name="text1"
             value={formData.text1}
             onChange={handleChange}
+            style={{ fontSize: '16px', minHeight: '100px'}}
             required
           />            
         </label>

@@ -17,7 +17,7 @@ const Problems = ( { isLoggedIn, operatingData} ) => {
     };
   
     useEffect(() => {
-        if (operatingData.idUser != 0) {
+        if (operatingData.idUser != 0 && operatingData.idUser != undefined) {
             const fetchUserData = async () => {
                 try {
                     const response = await axios.get('https://localhost:7298/api/User/GetUser' ,

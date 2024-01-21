@@ -35,9 +35,10 @@ const AdminText = ( { isLoggedIn, onLoginChange, operatingData} ) => {
   
       if (isConfirmed) {
         try {
+          console.log(idText);
           const response = await axios.delete('https://localhost:7298/api/Text/DeleteText', {
             params: {
-              idText: idText,
+              textId: idText,
             },
           });
           console.log('Deleted successfully');
@@ -86,7 +87,7 @@ const AdminText = ( { isLoggedIn, onLoginChange, operatingData} ) => {
         </>
       )}
       { isEditing && !isCreating && (
-        <TextUpdate handleEdit={handleEdit} choosedText={choosedText} setChoosedText={setChoosedText}/>
+        <TextUpdate handleEdit={handleEdit} choosedText={choosedText} setChoosedText={setChoosedText} fetchTexts={fetchTexts}/>
       )}    
       {isCreating && !isEditing && (
         <TextCreate handleCreate={handleCreate} fetchTexts={fetchTexts}/>

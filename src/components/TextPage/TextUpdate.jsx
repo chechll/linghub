@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-const TextUpdate = ( {handleEdit, choosedText, setChoosedText} ) => {
+const TextUpdate = ( {handleEdit, choosedText, setChoosedText, fetchTexts} ) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setChoosedText((prevData) => ({ ...prevData, [name]: value }));
@@ -48,6 +48,8 @@ const TextUpdate = ( {handleEdit, choosedText, setChoosedText} ) => {
         toString.error('error',error);
       }
     }
+
+    await fetchTexts();
   };
 
   return (
@@ -62,7 +64,7 @@ const TextUpdate = ( {handleEdit, choosedText, setChoosedText} ) => {
           <div>
             <label>
               <strong>Text: </strong>
-              <input type="text" name="text1" value={choosedText.text1} onChange={handleChange} />
+              <textarea type="text" name="text1" value={choosedText.text1} onChange={handleChange} style={{ fontSize: '16px', minHeight: '100px'}}/>
             </label>
           </div>
           <div>

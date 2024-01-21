@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-function WordUpdate({ handleEdit, choosedWord, setChoosedWord }) {
+function WordUpdate({ handleEdit, choosedWord, setChoosedWord , fetchWords}) {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -41,6 +41,8 @@ function WordUpdate({ handleEdit, choosedWord, setChoosedWord }) {
       }
     }
 
+    await fetchWords();
+
   };
 
   const handleChange = (e) => {
@@ -66,13 +68,13 @@ function WordUpdate({ handleEdit, choosedWord, setChoosedWord }) {
       <div>
         <label>
           <strong>EnSent: </strong>
-          <input type="text" name="ensent" defaultValue={choosedWord.ensent} onChange={handleChange} />
+          <textarea type="text" name="ensent" defaultValue={choosedWord.ensent} onChange={handleChange} style={{ fontSize: '16px', minHeight: '100px'}}/>
         </label>
       </div>
       <div>
         <label>
           <strong>UaSent: </strong>
-          <input type="text" name="uasent" defaultValue={choosedWord.uasent} onChange={handleChange} />
+          <textarea type="text" name="uasent" defaultValue={choosedWord.uasent} onChange={handleChange} style={{ fontSize: '16px', minHeight: '100px'}}/>
         </label>
       </div>
       <div className="user-actions">

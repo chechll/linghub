@@ -75,23 +75,25 @@ const WordCreate = ({ handleCreate , fetchWords}) => {
           />
         </label>
         <label>
-          <input
+          <textarea
             placeholder='ensent'
             type="text"
             name="ensent"
             value={formData.ensent}
             onChange={handleChange}
+            style={{ fontSize: '16px', minHeight: '100px'}}
             required
           />
         </label>
         <label>
           
-          <input
+          <textarea
             placeholder='uasent'
             type="text"
             name="uasent"
             value={formData.uasent}
             onChange={handleChange}
+            style={{ fontSize: '16px', minHeight: '100px'}}
             required
           />
         </label>

@@ -57,7 +57,7 @@ function UserWord({ isLoggedIn, onLoginChange, operatingData}) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (word == wordData.uaword) {
+        if (word.toLowerCase() == wordData.uaword) {
 
             const saveAnsData = async () => {
                 try {

@@ -32,9 +32,11 @@ const AdminWord = ({ isLoggedIn, onLoginChange, operatingData }) => {
         const isConfirmed = window.confirm('Are you sure?');
         if (isConfirmed) {
             try {
+
+                console.log(idWord);
                 const response = await axios.delete('https://localhost:7298/api/Word/DeleteWord', {
                     params: {
-                        idWord: idWord,
+                        wordId: idWord,
                     },
                 });
                 console.log('Deleted successfully');
@@ -85,7 +87,7 @@ const AdminWord = ({ isLoggedIn, onLoginChange, operatingData }) => {
                 </>
             )}
             {isEditing && !isCreating && (
-                <WordUpdate handleEdit={handleEdit} choosedWord={choosedWord} setChoosedWord={setChoosedWord} />
+                <WordUpdate handleEdit={handleEdit} choosedWord={choosedWord} setChoosedWord={setChoosedWord} fetchWords={fetchWords}/>
             )}
             {isCreating && !isEditing && <WordCreate handleCreate={handleCreate} fetchWords={fetchWords}/>}
         </div>
