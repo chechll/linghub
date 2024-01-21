@@ -102,7 +102,7 @@ function HomeUser({ onLoginChange, operatingData }) {
                             {count > 0 ? (
                                 <FontAwesomeIcon icon={faCheckCircle} color="#21209C" />
                             ) : (
-                                <FontAwesomeIcon icon={faTimesCircle} color="#21209C" />
+                                <FontAwesomeIcon icon={faTimesCircle} color="#537FE7" />
                             )}
                         </div>
                     ))}
