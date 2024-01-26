@@ -33,8 +33,8 @@ const SignIn = ( { isLoggedIn, onLoginChange, operatingData, setOperatingData} )
           isAdmin: response.data.isAdmin,
         };
 
+        console.log('idUser = ', userData.idUser, 'isAdmin = ', userData.isAdmin);
         setOperatingData(userData);
-
         try {
 
           const resp = await axios.post(`https://localhost:7298/api/Calendar/AddDate?idUser=${userData.idUser}`);
@@ -52,8 +52,9 @@ const SignIn = ( { isLoggedIn, onLoginChange, operatingData, setOperatingData} )
     };
 
     useEffect(() => {
+      console.log(operatingData.isAdmin, ' idu ',operatingData.idUser);
       if (operatingData.idUser !== 0 && operatingData.idUser !== undefined && operatingData.isAdmin !== undefined) {
-        onLoginChange(operatingData.idUser);
+        onLoginChange(operatingData.idUser,operatingData.isAdmin);
       }
     }, [operatingData.idUser, operatingData.isAdmin]);
 

@@ -11,6 +11,8 @@ function HomeAdmin ({onLoginChange, operatingData}) {
             onLoginChange(operatingData.idUser);
           }
 
+        console.log(operatingData.idUser,' ',operatingData.isAdmin);
+
         const fetchErrors = async () => {
             try {
                 const response = await axios.get('https://localhost:7298/api/Error/GetAllErrors');
@@ -27,6 +29,8 @@ function HomeAdmin ({onLoginChange, operatingData}) {
     const handleDelete = async (idError) => {
     
         const isConfirmed = window.confirm('Are you sure?');
+
+        console.log(idError);
     
         if (isConfirmed) {
           try {
@@ -53,7 +57,7 @@ function HomeAdmin ({onLoginChange, operatingData}) {
             {errors.map((error) => (
                 <li key={error.id} className="item">
                 <strong>Email:</strong> {error.email} , <strong>Description:</strong> {error.description}
-                <button className="button" onClick={() => handleDelete()}>
+                <button className="button" onClick={() => handleDelete(error.id)}>
                     Delete
                 </button>
                 </li>

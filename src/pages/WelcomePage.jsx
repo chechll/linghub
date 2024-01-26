@@ -1,9 +1,16 @@
+import { useEffect } from 'react';
 import React from "react";
 import '../CSS/index.css';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 
-function WelcomePage({ isLoggedIn, operatingData}) {
+function WelcomePage({ isLoggedIn, onLoginChange, operatingData}) {
+    useEffect(() => {
+        if (operatingData.idUser !== 0 || operatingData.idUser !== undefined) {
+            onLoginChange(operatingData.idUser,operatingData.isAdmin);
+          }
+    }, []);      
+
     return (
         <div className="main-c">
                 <Navbar isLoggedIn={isLoggedIn} operatingData={operatingData}/>

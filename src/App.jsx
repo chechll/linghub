@@ -15,31 +15,39 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 
-    const [operatingData, setOperatingData] = useState({
-        idUser: 0,
-        isAdmin: 0,
+    const [operatingData, setOperatingData] = useState(() => {
+        const storedData = getWithExpiry('userOperatingData');
+        return storedData || { idUser: 0, isAdmin: 0 };
     });
 
-    const [isLoggedIn, setLoggedIn] = useState(false);
+    const [isLoggedIn, setLoggedIn] = useState(() => {
+        return operatingData.idUser !== 0;
+    });
+
     const history = useNavigate();
 
-    
-    const handleLoginChange = (id , ad) => {
-        setLoggedIn(!isLoggedIn);
-        if(id === 0 || id === undefined) 
-        {
-                setLoggedIn(false);
-                setOperatingData({idUser : id, isAdmin: ad});
-                history('/');
+    useEffect(() => {
+        setWithExpiry('userOperatingData', operatingData, 6 * 60 * 60 * 1000);
+    }, [operatingData]);
+
+    const handleLoginChange = (idUser, isAdmin) => {
+        if (idUser === 0 || idUser === undefined) {
+            setLoggedIn(false);
+            setOperatingData({ idUser: 0, isAdmin: 0 });
+            localStorage.removeItem('userOperatingData');
+            history('/');
         } else {
-            !isLoggedIn ? history('/home') : history('/');
+            console.log('idUser = ',idUser,'isAdmin = ',isAdmin);
+            setLoggedIn(true);
+            setOperatingData({ idUser: idUser, isAdmin: isAdmin });
+            history('/home');
         }
     };
 
     return (
         <>
             <Routes>
-                <Route exact path="/"  element={<WelcomePage isLoggedIn={isLoggedIn} operatingData={operatingData}/>} />
+                <Route exact path="/"  element={<WelcomePage isLoggedIn={isLoggedIn} onLoginChange={handleLoginChange} operatingData={operatingData}/>} />
                 <Route path="/home" element={<Home isLoggedIn={isLoggedIn} onLoginChange={handleLoginChange} operatingData={operatingData}/>} />
                 <Route path="/sign_up" element={<SignUp isLoggedIn={isLoggedIn} onLoginChange={handleLoginChange} operatingData = {operatingData} setOperatingData={setOperatingData}/>} />
                 <Route path="/sign_in" element={<SignIn isLoggedIn={isLoggedIn} onLoginChange={handleLoginChange} operatingData = {operatingData} setOperatingData={setOperatingData}/>} />
@@ -56,3 +64,26 @@ function App() {
 }
 
 export default App;
+
+function setWithExpiry(key, value, ttl) {
+    const now = new Date();
+    const item = {
+        value: value,
+        expiry: now.getTime() + ttl,
+    };
+    localStorage.setItem(key, JSON.stringify(item));
+}
+
+function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key);
+    if (!itemStr) {
+        return null;
+    }
+    const item = JSON.parse(itemStr);
+    const now = new Date();
+    if (now.getTime() > item.expiry) {
+        localStorage.removeItem(key);
+        return null;
+    }
+    return item.value;
+}
